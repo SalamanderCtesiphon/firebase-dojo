@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { 
   getFirestore, collection, getDocs,
-  addDoc
+  addDoc, deleteDoc, doc
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -55,5 +55,10 @@ const deleteBookForm = document.querySelector('.delete')
 deleteBookForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
+  const docRef = doc(db, 'books', deleteBookForm.id.value)
 
+  deleteDoc(docRef)
+    .then(() => {
+      deleteBookForm.reset()
+    })
 })
