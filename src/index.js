@@ -1,16 +1,15 @@
 import { initializeApp } from 'firebase/app'
 import { 
-  getFirestore, collection, getDocs, onSnapshot,
+  getFirestore, collection, onSnapshot,
   addDoc, deleteDoc, doc,
-  query, where,
-  orderBy, serverTimestamp,
-  getDoc, updateDoc
+  query, 
+  orderBy, serverTimestamp, updateDoc
 } from 'firebase/firestore'
 import {
   getAuth, 
   createUserWithEmailAndPassword,
   signOut,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword, onAuthStateChanged
 } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -42,7 +41,7 @@ onSnapshot(q, (snapshot) => {
     snapshot.docs.forEach((doc) => {
       books.push({ ...doc.data(), id: doc.id })
     })
-    console.log(books)
+    //console.log(books)
 })
 
 //adding documents
@@ -77,7 +76,7 @@ deleteBookForm.addEventListener('submit', (e) => {
 const docRef = doc(db, 'books', 'Bh3TlVUAhxztbBI3N4gx')
 
 onSnapshot(docRef, (doc) => {
-  console.log(doc.data(), doc.id)
+  //console.log(doc.data(), doc.id)
 })
 
 // updating a document 
@@ -105,7 +104,7 @@ signupForm.addEventListener('submit', (e) => {
 
   createUserWithEmailAndPassword(auth, email, password )
     .then((cred) => {
-      console.log('user created:', cred.user)
+      //console.log('user created:', cred.user)
       signupForm.reset()
     })
     .catch((err) => {
@@ -118,7 +117,7 @@ const logoutButton = document.querySelector('.logout')
 logoutButton.addEventListener('click', () => {
   signOut(auth)
     .then(() => {
-      console.log('the user signed out')
+      //console.log('the user signed out')
     })
     .catch((err) => {
       console.log(err.message)
@@ -134,9 +133,14 @@ loginForm.addEventListener('submit', (e) => {
 
   signInWithEmailAndPassword(auth, email, password)
     .then((cred) => {
-      console.log('user logged in:', cred.user)
+      //console.log('user logged in:', cred.user)
     })
     .catch((err) => {
       console.log(err.message)
     })
+})
+
+// subscribing to auth changes
+onAuthStateChanged(auth, (user) => {
+  console.log('user status changed:', user)
 })
